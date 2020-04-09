@@ -1,22 +1,26 @@
 # gcp-docker
 Docker Image for Globus Connect Personal Client
 
+I forked this from [meissnert/gcp-docker](https://github.com/meissnert/gcp-docker) because the client was out of date.
+
 ### Running GCP client on Synology NAS:
 
-1) Install the Docker app on the Synology drive 
+1) Install the Docker app using "Package Center"
 
-2) On the registry tab of the Docker app look for meissnert/gcp and download the image 
+2) Open the Docker app
 
-3) launch the image using the wizard and specify a container name, e.g. gcp 
+3) On the "Registry" tab, search for `barrymoo/gcp_client`, right click on image, click "Download"
 
-4) go to the container, edit and set environmental variables ```USERID``` & ```USER``` to match one of the local users on the NAS
+4) Navigate to the "Container" tab, right click the `barrymoo/gcp_client` container, and edit the container
 
-5) on the volume settings specify which folders to share with the container and seth the mount path to ```/home/<USER>/<FOLDERTOSHARE>```
+5) Under the "Volumes" tab, select the data you want to mount, mount to `/mnt/data`
 
-6) go to terminal and run: ```adduser --disabled-password --gecos '' $USER &USERID```
+6) Under the _SOMETHING HERE_, set environmental variable `USER` to match one of the local users on the NAS
 
-7) `su $USER `
+7) Launch the container, under the "Terminal" tab, setup and start gcp:
 
-8) ```/opt/globusconnectpersonel/globusconnect -setup <key>```
-
-9) ```opt/globusconnectpersonel/gobusconnect -start &```
+```sh
+su - $USER
+/opt/globusconnectpersonel/globusconnectpersonal -setup <key>
+/opt/globusconnectpersonel/gobusconnectpersonal -start -restrict-path r[w]/mnt/data/.../path/to/data
+```
